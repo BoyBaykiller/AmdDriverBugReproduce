@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
 include(FetchContent)
 
-project(AmdDriverBugReproduce)
 set(CMAKE_CXX_STANDARD 20)
 
 #----------------------------------------------------------------------
@@ -42,10 +41,12 @@ endif()
 
 #----------------------------------------------------------------------
 
-set(sourceFiles main.cpp)
+project(AmdDriverBugReproduce)
 
-add_executable(${CMAKE_PROJECT_NAME} ${sourceFiles})
+set(sourceFiles BindlessCompressedLodArtifacts/main.cpp)
+add_executable(BindlessCompressedLodArtifacts "BindlessCompressedLodArtifacts" ${sourceFiles})
+target_link_libraries(BindlessCompressedLodArtifacts PRIVATE glad glfw)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE glad glfw)
-
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${CMAKE_PROJECT_NAME})
+set(sourceFiles BindlessPerformanceOverhead/main.cpp)
+add_executable(BindlessPerformanceOverhead "BindlessPerformanceOverhead" ${sourceFiles})
+target_link_libraries(BindlessPerformanceOverhead PRIVATE glad glfw)

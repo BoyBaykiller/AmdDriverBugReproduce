@@ -66,7 +66,7 @@ int main()
     uint32_t levels = 9;
     uint32_t size = 1 << levels;
 
-    GLFWwindow* window = glfwCreateWindow(size, size, "Reproduce-Bug", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(size, size, "Repro", nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
     gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress));
@@ -96,9 +96,9 @@ int main()
         glBindVertexArray(dummyVAO);
     }
 
-    bool shouldReproduceBug = false;
+    bool shouldReproduce = true;
     // Note: Also happens with other compressed formats like COMPRESSED_RGBA_S3TC_DXT3_EXT
-    GLenum internalFormat = shouldReproduceBug ? GL_COMPRESSED_RGBA_BPTC_UNORM : GL_RGBA8;
+    GLenum internalFormat = shouldReproduce ? GL_COMPRESSED_RGBA_BPTC_UNORM : GL_RGBA8;
 
     uint32_t texture;
     glCreateTextures(GL_TEXTURE_2D, 1, &texture);
@@ -106,10 +106,10 @@ int main()
     glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     Vector4* pixels = new Vector4[size * size];
-    for (int i = 0; i < size * size; i++)
+    for (int32_t i = 0; i < size * size; i++)
     {
-        int y = i / size;
-        int x = i % size;
+        int32_t y = i / size;
+        int32_t x = i % size;
         Vector4 color = {
             .r = x / (float)size,
             .g = y / (float)size,
@@ -119,11 +119,11 @@ int main()
         pixels[i] = color;
     }
     glTextureSubImage2D(texture, 0, 0, 0, size, size, GL_RGBA, GL_FLOAT, pixels);
-
+    
     uint64_t handle = glGetTextureHandleARB(texture);
     glMakeTextureHandleResidentARB(handle);
 
-    // Note: When putting this before generating the handle it behaves correctly regardless of <shouldReproduceBug>
+    // Note: When putting this before generating the handle it behaves correctly regardless of <shouldReproduce>
     glGenerateTextureMipmap(texture);
 
     uint32_t ssbo;
