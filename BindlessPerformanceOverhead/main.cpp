@@ -1,32 +1,13 @@
 #include <iostream>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-{
-    std::cout << message << '\n';
-}
+#include "../Common/common.h"
 
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+    constexpr uint32_t width = 800;
+    constexpr uint32_t height = 800;
+    GLFWwindow* window = CreateOpenGLWindow(width, height, "Repro");
 
-    uint32_t width = 800;
-    uint32_t height = 800;
-    GLFWwindow* window = glfwCreateWindow(width, height, "Repro", nullptr, nullptr);
-
-    glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress));
-
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(MessageCallback, 0);
-
-    bool shouldReproduce = true;
+    bool shouldReproduce = false;
     {
         int32_t textureCount = 10000;
         for (int32_t i = 0; i < textureCount; i++)

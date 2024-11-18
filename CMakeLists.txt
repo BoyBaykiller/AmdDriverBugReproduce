@@ -43,10 +43,16 @@ endif()
 
 project(AmdDriverBugReproduce)
 
-set(sourceFiles BindlessCompressedLodArtifacts/main.cpp)
-add_executable(BindlessCompressedLodArtifacts "BindlessCompressedLodArtifacts" ${sourceFiles})
+set(commonFiles 
+    Common/Common.h
+    Common/Common.cpp
+)
+
+add_executable(BindlessCompressedLodArtifacts "BindlessCompressedLodArtifacts" BindlessCompressedLodArtifacts/Main.cpp ${commonFiles})
 target_link_libraries(BindlessCompressedLodArtifacts PRIVATE glad glfw)
 
-set(sourceFiles BindlessPerformanceOverhead/main.cpp)
-add_executable(BindlessPerformanceOverhead "BindlessPerformanceOverhead" ${sourceFiles})
+add_executable(BindlessPerformanceOverhead "BindlessPerformanceOverhead" BindlessPerformanceOverhead/Main.cpp ${commonFiles})
 target_link_libraries(BindlessPerformanceOverhead PRIVATE glad glfw)
+
+add_executable(MappedBufferHostMemInvestigation "MappedBufferHostMemInvestigation" MappedBufferHostMemInvestigation/Main.cpp ${commonFiles})
+target_link_libraries(MappedBufferHostMemInvestigation PRIVATE glad glfw)

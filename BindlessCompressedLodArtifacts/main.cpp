@@ -1,7 +1,4 @@
-#include <iostream>
-
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
+#include "../Common/common.h"
 
 const char* vertexSrcCode = R"(
 #version 460 core
@@ -19,8 +16,7 @@ void main()
 {
     gl_Position = vec4(VertexPositions[gl_VertexID], 0.0, 1.0);
     TexCoord = gl_Position.xy * 0.5 + 0.5;
-}
-)";
+})";
 
 const char* fragmentSrcCode = R"(
 #version 460 core
@@ -42,13 +38,7 @@ void main()
     vec3 color = textureLod(Texture, TexCoord, lod).rgb;
 
     FragColor = vec4(color, 1.0);
-}
-)";
-
-void GLAPIENTRY MessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-{
-    std::cout << message << '\n';
-}
+})";
 
 struct Vector4
 {
@@ -57,32 +47,14 @@ struct Vector4
 
 int main()
 {
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-
-    uint32_t levels = 9;
-    uint32_t size = 1 << levels;
-
-    GLFWwindow* window = glfwCreateWindow(size, size, "Repro", nullptr, nullptr);
-
-    glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress));
-
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(MessageCallback, 0);
+    constexpr uint32_t levels = 9;
+    constexpr uint32_t size = 1 << levels;
+    GLFWwindow* window = CreateOpenGLWindow(size, size, "Repro");
 
     uint32_t shaderProgram;
     {
-        uint32_t vertexShader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader, 1, &vertexSrcCode, 0);
-        glCompileShader(vertexShader);
-
-        uint32_t fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader, 1, &fragmentSrcCode, 0);
-        glCompileShader(fragmentShader);
+        uint32_t vertexShader = CompileShader(GL_VERTEX_SHADER, vertexSrcCode);
+        uint32_t fragmentShader = CompileShader(GL_FRAGMENT_SHADER, fragmentSrcCode);
 
         shaderProgram = glCreateProgram();
         glAttachShader(shaderProgram, vertexShader);
