@@ -1,4 +1,4 @@
-#include "../Common/common.h"
+#include "../Common/Common.h"
 
 const char* vertexSrcCode = R"(
 #version 460 core

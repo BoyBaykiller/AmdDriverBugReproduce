@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../Common/common.h"
+#include "../Common/Common.h"
 
 int main()
 {
