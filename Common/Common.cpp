@@ -1,4 +1,5 @@
 #include <array>
+#include <stdio.h>
 #include "Common.h"
 
 int CompileShader(GLenum shaderType, const char* srcCode)
@@ -30,7 +31,7 @@ GLFWwindow* CreateOpenGLWindow(uint32_t width, uint32_t height, const char* name
     GLFWwindow* window = glfwCreateWindow(width, height, name, nullptr, nullptr);
 
     glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)(glfwGetProcAddress));
+    gladLoadGL((GLADloadfunc)(glfwGetProcAddress));
 
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
