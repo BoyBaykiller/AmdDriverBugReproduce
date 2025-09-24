@@ -35,6 +35,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(glad)
 
 glad_add_library(glad_gl_core_46 STATIC LANGUAGE c REPRODUCIBLE API gl:core=4.6 EXTENSIONS GL_ARB_bindless_texture)
+target_include_directories(glad_gl_core_46 PUBLIC ${CMAKE_BINARY_DIR}/glad_gl_core_46/gladsources/include)
 
 #----------------------------------------------------------------------
 
@@ -46,10 +47,13 @@ set(commonFiles
 )
 
 add_executable(BindlessCompressedLodArtifacts "BindlessCompressedLodArtifacts" BindlessCompressedLodArtifacts/Main.cpp ${commonFiles})
-target_link_libraries(BindlessCompressedLodArtifacts PRIVATE glad_gl_core_46 glfw PUBLIC glad_gl_core_46)
+target_link_libraries(BindlessCompressedLodArtifacts PRIVATE glad_gl_core_46 glfw)
 
 add_executable(BindlessPerformanceOverhead "BindlessPerformanceOverhead" BindlessPerformanceOverhead/Main.cpp ${commonFiles})
-target_link_libraries(BindlessPerformanceOverhead PRIVATE glad_gl_core_46 glfw PUBLIC glad_gl_core_46)
+target_link_libraries(BindlessPerformanceOverhead PRIVATE glad_gl_core_46 glfw)
 
 add_executable(MappedBufferHostMemInvestigation "MappedBufferHostMemInvestigation" MappedBufferHostMemInvestigation/Main.cpp ${commonFiles})
-target_link_libraries(MappedBufferHostMemInvestigation PRIVATE glad_gl_core_46 glfw PUBLIC glad_gl_core_46)
+target_link_libraries(MappedBufferHostMemInvestigation PRIVATE glad_gl_core_46 glfw)
+
+add_executable(DispatchesMissedDependency "DispatchesMissedDependency" DispatchesMissedDependency/Main.cpp ${commonFiles})
+target_link_libraries(DispatchesMissedDependency PRIVATE glad_gl_core_46 glfw)

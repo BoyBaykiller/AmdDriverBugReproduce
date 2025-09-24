@@ -1,5 +1,5 @@
 #include <array>
-#include <stdio.h>
+#include <cstdio>
 #include "Common.h"
 
 int CompileShader(GLenum shaderType, const char* srcCode)
